@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+<div id="demo"></div>
+
+<table>
+  <tbody>
+    <tr style="background-color:red">
+      <td>Book1</td>
+      <td>2018-22-01</td>
+      <td>2018-22-15</td>
+    </tr>
+    <tr>
+      <td>Book2</td>
+      <td>2018-22-01</td>
+      <td>2018-22-15</td>
+    </tr>
+    <tr style="background-color:red">
+      <td>Book3</td>
+      <td>2018-22-01</td>
+      <td>2018-22-15</td>
+    </tr>
+    <tr>
+      <td>Book4</td>
+      <td>2018-22-01</td>
+      <td>2018-22-15</td>
+    </tr>
+    <tr style="background-color:red">
+      <td>Book5</td>
+      <td>2018-22-01</td>
+      <td>2018-22-15</td>
+    </tr>
+ </tbody>
+</table>
+
+<script>
+    var count = 0;
+	var tableRows = $("table > tbody > tr");
+    tableRows.each(function(item){
+    	var date1 = new Date($($(tableRows[item]).find('td')[1]).text());
+        var date2 = new Date($($(tableRows[item]).find('td')[2]).text());
+        var diffDate = date2 - date1
+        var isStyled = $(tableRows[item]).attr('style')
+        if(diffDate > 14 && !isStyled) {
+        	count += 1;
+        } else if(diffDate < 14 && isStyled){
+            count += 1;
+        }
+    })
+    document.getElementById("demo").innerHTML = count;
+</script>
+
+</body>
+</html>

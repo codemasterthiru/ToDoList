@@ -1,0 +1,110 @@
+import React from 'react'
+
+class ToDoForm extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: [],
+      string: '',
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleChange(event) {
+    this.setState({ string: event.target.value })
+  }
+
+  handleSubmit(event) {
+    if (this.state.string) {
+      this.state.value.push(this.state.string)
+      this.setState({ string: '' })
+    }
+    event.preventDefault()
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input type="text" value={this.state.string} onChange={this.handleChange} />
+        <button type="submit">Add</button>
+        <ToDoTask {...this.state} />
+      </form>
+    )
+  }
+}
+class ToDoTask extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      taskCount: 0,
+    }
+    this.handleToggle = this.handleToggle.bind(this)
+  }
+  componentWillReceiveProps() {
+    this.setState({ taskCount: this.props.value.length })
+  }
+  handleToggle = event => {
+    const toggleClassName = event.currentTarget.getAttribute('class')
+    if (toggleClassName) {
+      event.currentTarget.removeAttribute('class')
+      const inc = this.state.taskCount + 1
+      this.setState({
+        taskCount: inc,
+      })
+    } else {
+      event.currentTarget.setAttribute('class', 'is-done')
+      const dec = this.state.taskCount - 1
+      this.setState({
+        taskCount: dec,
+      })
+    }
+  }
+  render() {
+    const { value } = this.props
+    const updateTasks = value.map(value => {
+      if (value) return <li onClick={this.handleToggle}>{value}</li>
+      return
+    })
+    return (
+      <>
+        <style>{`
+        ul > li {
+          list-style-type:disc;
+          list-style-position: inside;
+        }
+      `}</style>
+        <ul>
+          <div>
+            {this.state.taskCount + ' tasks remaining of ' + value.length + ' tasks'}
+          </div>
+          {updateTasks}
+        </ul>
+      </>
+    )
+  }
+}
+class TodoList extends React.Component {
+  render() {
+    return (
+      <>
+        <div>
+          <h2>Todo List</h2>
+          <ToDoForm />
+        </div>
+        <style>{`
+                    .is-done {
+                        text-decoration: line-through;
+                    }
+                    button {
+                      padding: 0px 10px;
+                      border: 1px solid;
+                    }
+                `}</style>
+      </>
+    )
+  }
+}
+
+export { TodoList }
+export default { TodoList }

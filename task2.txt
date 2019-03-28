@@ -1,0 +1,23 @@
+// you can write to stdout for debugging purposes, e.g.
+// console.log('this is a debug message');
+
+function solution(D, T) {
+    // write your code in JavaScript (Node.js 8.9.4)
+    var count = 0;
+    var tableRows = $("table > tbody > tr");
+    tableRows.each(function(item){
+        var date1 = $($(tableRows[item]).find('td')[1]).text();
+        var dateOne = new Date(date1);
+        var date2 = $($(tableRows[item]).find('td')[2]).text();
+        var dateTwo = new Date(date2 ? date2 : D);
+        var timeDiff = Math.abs(dateTwo.getTime() - dateOne.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        var isStyled = $(tableRows[item]).attr('style') ? true : false;
+        if(diffDays > T && !isStyled) {
+            count += 1;
+        } else if(diffDays <= T && isStyled){
+            count += 1;
+        }
+    })
+    return count;
+}
